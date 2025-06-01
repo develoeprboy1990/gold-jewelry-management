@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for Gold Jewelry Management */
+@layer components {
+  .sidebar-link {
+    @apply flex items-center px-4 py-3 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700 transition-colors duration-200;
+  }
+  
+  .sidebar-link.active {
+    @apply bg-yellow-100 text-yellow-700 border-r-4 border-yellow-600;
+  }
+  
+  .sidebar-link i {
+    @apply mr-3;
+  }
+  
+  .btn-primary {
+    @apply bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 inline-flex items-center;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 inline-flex items-center;
+  }
+  
+  .btn-danger {
+    @apply bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 inline-flex items-center;
+  }
+  
+  .form-input {
+    @apply block w-full rounded-lg border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500;
+  }
+  
+  .form-select {
+    @apply block w-full rounded-lg border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200;
+  }
+  
+  .card-header {
+    @apply px-6 py-4 border-b border-gray-200 bg-gray-50 rounded-t-lg;
+  }
+  
+  .card-body {
+    @apply p-6;
+  }
+  
+  .stat-card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200;
+  }
+  
+  .stat-icon {
+    @apply w-12 h-12 rounded-lg flex items-center justify-center;
+  }
+  
+  .nav-gradient {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  }
+}
