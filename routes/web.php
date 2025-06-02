@@ -1,20 +1,6 @@
 <?php
 // routes/web.php
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\CustomerController;
-
-use App\Http\Controllers\OrderController;
-
-use App\Http\Controllers\ItemController;
-use App\Http\Controllers\SaleController;
-
-use App\Http\Controllers\GoldPurchaseController;
-
-use App\Http\Controllers\SalesReportController;
-use App\Http\Controllers\InventoryReportController;
-use App\Http\Controllers\FinancialReportController;
-
+use App\Http\Controllers\{ProfileController, DashboardController, CustomerController, OrderController, ItemController, SaleController, GoldPurchaseController, SalesReportController, InventoryReportController, FinancialReportController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,8 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('gold-purchases', GoldPurchaseController::class);
 
     Route::prefix('reports')->name('reports.')->group(function () {
-        
-       // Sales Reports
+
+        // Sales Reports
         Route::get('/sales', [SalesReportController::class, 'index'])->name('sales.index');
         Route::get('/sales/daily', [SalesReportController::class, 'daily'])->name('sales.daily');
         Route::get('/sales/monthly', [SalesReportController::class, 'monthly'])->name('sales.monthly');
@@ -74,18 +60,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/inventory/movement', [InventoryReportController::class, 'movement'])->name('inventory.movement');
         Route::get('/inventory/low-stock', [InventoryReportController::class, 'lowStock'])->name('inventory.low-stock');
         Route::get('/inventory/export', [InventoryReportController::class, 'export'])->name('inventory.export');
-        
+
         // Financial Reports
         Route::get('/financial', [FinancialReportController::class, 'index'])->name('financial.index');
         Route::get('/financial/profit-loss', [FinancialReportController::class, 'profitLoss'])->name('financial.profit-loss');
         Route::get('/financial/cash-flow', [FinancialReportController::class, 'cashFlow'])->name('financial.cash-flow');
         Route::get('/financial/receivables', [FinancialReportController::class, 'receivables'])->name('financial.receivables');
         Route::get('/financial/export', [FinancialReportController::class, 'export'])->name('financial.export');
-        
     });
 
 
-    
+
 
 
     // Additional API routes for AJAX
@@ -102,4 +87,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

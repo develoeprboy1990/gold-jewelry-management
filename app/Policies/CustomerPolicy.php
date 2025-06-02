@@ -10,7 +10,7 @@ class CustomerPolicy
 {
     public function viewAny(User $user)
     {
-        return true; // $user->hasPermissionTo('view customers'); // or custom logic
+        return  $user->hasPermissionTo('view customers'); // or custom logic
     }
 
     public function view(User $user, Customer $customer)
