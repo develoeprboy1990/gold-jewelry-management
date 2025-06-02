@@ -4,12 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
+use App\Services\CustomerService;
 
 class CustomerController extends Controller
 {
+    protected $customerService;
+
+    public function __construct(CustomerService $customerService)
+    {
+        $this->customerService = $customerService;
+    }
+
     public function index()
     {
-        $customers = Customer::latest()->paginate(15);
+        $customers = $this->customerService->getAll();
         return view('customers.index', compact('customers'));
     }
 
@@ -18,29 +28,10 @@ class CustomerController extends Controller
         return view('customers.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreCustomerRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'cnic' => 'required|string|unique:customers,cnic|max:20',
-            'contact_no' => 'required|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'birth_date' => 'nullable|date',
-            'anniversary_date' => 'nullable|date',
-            'company' => 'nullable|string|max:255',
-            'house_no' => 'nullable|string|max:50',
-            'street_no' => 'nullable|string|max:50',
-            'block_no' => 'nullable|string|max:50',
-            'colony' => 'nullable|string|max:100',
-            'city' => 'required|string|max:100',
-            'country' => 'required|string|max:100',
-            'address' => 'nullable|string',
-            'cash_balance' => 'nullable|numeric|min:0',
-            'payment_preference' => 'required|in:cash,credit_card,check,pure_gold,used_gold'
-        ]);
-
-        Customer::create($validated);
-
+        dd($request->all());
+        $this->customerService->createCustomer($request->validated());
         return redirect()->route('customers.index')
             ->with('success', 'Customer created successfully.');
     }
@@ -56,28 +47,9 @@ class CustomerController extends Controller
         return view('customers.edit', compact('customer'));
     }
 
-    public function update(Request $request, Customer $customer)
+    public function update(UpdateCustomerRequest  $request, Customer $customer)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'cnic' => 'required|string|unique:customers,cnic,' . $customer->id . '|max:20',
-            'contact_no' => 'required|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'birth_date' => 'nullable|date',
-            'anniversary_date' => 'nullable|date',
-            'company' => 'nullable|string|max:255',
-            'house_no' => 'nullable|string|max:50',
-            'street_no' => 'nullable|string|max:50',
-            'block_no' => 'nullable|string|max:50',
-            'colony' => 'nullable|string|max:100',
-            'city' => 'required|string|max:100',
-            'country' => 'required|string|max:100',
-            'address' => 'nullable|string',
-            'cash_balance' => 'nullable|numeric|min:0',
-            'payment_preference' => 'required|in:cash,credit_card,check,pure_gold,used_gold'
-        ]);
-
-        $customer->update($validated);
+        $this->customerService->updateCustomer($customer, $request->validated());
 
         return redirect()->route('customers.index')
             ->with('success', 'Customer updated successfully.');
@@ -85,20 +57,15 @@ class CustomerController extends Controller
 
     public function destroy(Customer $customer)
     {
-        $customer->delete();
+        $this->customerService->deleteCustomer($customer);
         return redirect()->route('customers.index')
             ->with('success', 'Customer deleted successfully.');
     }
 
     public function search(Request $request)
     {
-        $query = $request->get('q');
-        $customers = Customer::where('name', 'LIKE', "%{$query}%")
-            ->orWhere('cnic', 'LIKE', "%{$query}%")
-            ->orWhere('contact_no', 'LIKE', "%{$query}%")
-            ->limit(10)
-            ->get(['id', 'name', 'cnic', 'contact_no']);
-
+        $query = $request->all();
+        $customers = $this->customerService->searchCustomer($query);
         return response()->json($customers);
     }
 }

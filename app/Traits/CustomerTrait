@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Traits;
+
+use App\Models\Customer;
+
+trait CustomerTrait
+{
+    public function createFakeCustomer(array $overrides = []): Customer
+    {
+        return Customer::create(array_merge([
+            'name' => fake()->name,
+            'cnic' => fake()->numerify('#####-#######-#'),
+            'contact_no' => fake()->phoneNumber,
+            'email' => fake()->unique()->safeEmail,
+            'birth_date' => fake()->date(),
+            'anniversary_date' => fake()->optional()->date(),
+            'company' => fake()->company,
+            'house_no' => fake()->buildingNumber,
+            'street_no' => fake()->streetName,
+            'block_no' => 'Block ' . fake()->randomLetter,
+            'colony' => fake()->streetSuffix,
+            'city' => fake()->city,
+            'country' => fake()->country,
+            'address' => fake()->address,
+            'cash_balance' => fake()->randomFloat(2, 0, 100000),
+            'payment_preference' => fake()->randomElement(['Cash', 'Credit Card', 'Bank Transfer']),
+        ], $overrides));
+    }
+}
